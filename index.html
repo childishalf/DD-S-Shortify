@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+    <title>Frontend Mentor | Shortly URL shortening API Challenge</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      .attribution {
+        font-size: 11px;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .attribution a {
+        color: hsl(228, 45%, 44%);
+      }
+      .shortened-url {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="root">
+      <div class="app-header">
+        <input type="checkbox" id="nav-visible" tabindex="-1" />
+        <div class="navbar">
+          <h1>Shortify</h1>
+          <label for="nav-visible" class="toggle-nav">
+            <svg class="icon-menu" width="25" viewBox="0 0 512 512">
+              <g>
+                <path d="M492,236H20c-11.046,0-20,8.954-20,20c0,11.046,8.954,20,20,20h472c11.046,0,20-8.954,20-20S503.046,236,492,236z"></path>
+              </g>
+              <g>
+                <path d="M492,76H20C8.954,76,0,84.954,0,96s8.954,20,20,20h472c11.046,0,20-8.954,20-20S503.046,76,492,76z"></path>
+              </g>
+              <g>
+                <path d="M492,396H20c-11.046,0-20,8.954-20,20c0,11.046,8.954,20,20,20h472c11.046,0,20-8.954,20-20C512,404.954,503.046,396,492,396z"></path>
+              </g>
+            </svg>
+          </label>
+          <nav class="navbar-nav">
+            <a href="/">Features</a>
+            <a href="/">Pricing</a>
+            <a href="/">Resources</a>
+            <div class="separator-mobile"></div>
+            <button type="button" class="btn btn-small btn-secondary btn-login">Login</button>
+            <button type="button" class="btn btn-small btn-primary">Sign Up</button>
+          </nav>
+        </div>
+      </div>
+      <div class="intro">
+        <div class="content">
+          <h1 class="title">Not Your Average Link Shortner</h1>
+          <p class="desc">Make your links shorter, smarter, and more effective.</p>
+          <button class="btn btn-primary">Get Started</button>
+        </div>
+        <div class="img-wrapper">
+          <img src="images/me2.webp" alt="" role="presentation" />
+        </div>
+        <form class="shorten-url-form">
+          <input type="url" placeholder="Shorten a link here&hellip;" />
+          <button type="submit" class="btn btn-primary">Shorten It!</button>
+          <div class="shortened-url"></div>
+        </form>
+      </div>
+      <div class="start-now">
+        <h1 class="title">Boost your links today</h1>
+        <button class="btn btn-primary">Get Started</button>
+      </div>
+      <div class="app-footer">
+        <div class="content">
+          <h1>Shortify</h1>
+          
+          <div class="social-links">
+            <a href="#">
+              <img src="images/icon-facebook.svg" alt="Facebook page" />
+            </a>
+            <a href="#">
+              <img src="images/icon-twitter.svg" alt="Twitter page" />
+            </a>
+            <a href="#">
+              <img src="images/icon-pinterest.svg" alt="Pinterest page" />
+            </a>
+            <a href="#">
+              <img src="images/icon-instagram.svg" alt="Instagram page" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="attribution">
+      Coded by <a href="https://www.linkedin.com/in/dumebi-chukwuma-1a914a258?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app">Ohhitsalfy</a>.
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('.shorten-url-form');
+        const input = form.querySelector('input[type="url"]');
+        const resultContainer = document.querySelector('.shortened-url');
+
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const longUrl = input.value;
+
+          if (longUrl) {
+            try {
+              const response = await axios.get(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`);
+              const shortUrl = response.data.shorturl;
+
+              // Display the shortened URL
+              resultContainer.innerHTML = `<p>Shortened URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>`;
+            } catch (error) {
+              console.error('Error shortening the URL:', error);
+              resultContainer.innerHTML = `<p>Error shortening the URL. Please try again.</p>`;
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
